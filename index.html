@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nar Pizza</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&family=Oswald:wght@600&display=swap" rel="stylesheet">
+<style>
+/* VOICE: calm, premium, appetising - a pizzeria that takes its time
+   IDEA: one pizza being made in front of you: dough -> toppings -> oven -> your order
+   PICTURE: a pinned stage; scroll scrubs the pizza through three scenes
+   COLOUR and TYPE: flour cream, tomato red, oven black; Fraunces headlines, Inter body, Oswald logo
+   LAYOUT: sticky nav, pinned 3-scene story, then menu, visit, footer */
+:root{--cream:#efe7da;--red:#a8231c;--dark:#1b1716;--ink:#1f1a17;--muted:#6d625a;--card:#fbf7f1;--line:#ddd2c2}
+*{box-sizing:border-box;min-width:0}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.55 Inter,system-ui,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:Fraunces,Georgia,serif;font-weight:400;line-height:1.05;text-wrap:balance;margin:0;letter-spacing:-.01em}
+a{color:inherit}
+:focus-visible{outline:3px solid #e8a33d;outline-offset:3px}
+
+/* nav */
+nav{position:fixed;inset:0 0 auto;z-index:50;background:rgba(239,231,218,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,0,0,.06)}
+.navin{display:flex;align-items:center;gap:20px;padding:12px max(4vw,16px);max-width:1400px;margin:0 auto}
+.logo{font:600 24px Oswald,sans-serif;letter-spacing:.02em;text-decoration:none}
+.links{display:flex;gap:4px;margin-left:auto;align-items:center}
+.links a{text-decoration:none;font-size:14px;padding:10px 12px;border-radius:8px}
+.links a:hover{background:rgba(0,0,0,.05)}
+.links .order{background:var(--red);color:#fff;border-radius:999px;padding:9px 18px;font-weight:600}
+.links .order:hover{background:#8b1c16}
+@media(max-width:640px){.links a:not(.order){display:none}}
+
+/* story */
+.story{position:relative}
+.stage{height:100vh;height:100svh;position:relative;overflow:hidden;background:var(--cream)}
+.txt{position:absolute;z-index:6}
+.t1{left:max(7vw,20px);top:50%;transform:translateY(-50%);max-width:460px}
+.t2{left:0;right:0;top:calc(64px + 5vh);text-align:center;color:#fff;padding:0 20px}
+.t3{left:max(7vw,20px);top:calc(64px + 8vh);color:#fff;max-width:420px}
+.eyebrow{font-size:13px;color:var(--red);margin-bottom:12px;font-weight:500}
+.txt h2{font-size:clamp(40px,5.6vw,76px)}
+.txt p{margin:14px 0 0;font-size:clamp(15px,1.3vw,18px)}
+.t1 p{color:var(--muted)}
+.t2 p,.t3 p{color:rgba(255,255,255,.82)}
+.pill{display:inline-flex;align-items:center;gap:8px;margin-top:24px;min-height:44px;padding:0 20px;border-radius:999px;text-decoration:none;font-weight:600;font-size:14px}
+.pill.dark{background:var(--ink);color:#fff}
+.pill.light{background:var(--cream);color:var(--ink)}
+
+.plate{position:absolute;left:50%;top:52%;width:min(44vw,500px);aspect-ratio:1;z-index:4}
+.dough{position:absolute;inset:14%}
+.dough .bob{width:100%;height:100%;animation:bob 4s ease-in-out infinite}
+.dough img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 18px 18px rgba(60,40,20,.18))}
+@keyframes bob{50%{transform:translateY(-14px)}}
+.shadow{position:absolute;left:18%;right:18%;bottom:-4%;height:9%;border-radius:50%;background:radial-gradient(closest-side,rgba(40,25,10,.38),transparent);filter:blur(4px)}
+.tilt{position:absolute;inset:0;transform-style:preserve-3d}
+.raw,.baked{position:absolute;inset:0}
+.raw img.base,.baked img{width:100%;height:100%;display:block}
+.baked{opacity:0}
+.raw,.baked{filter:drop-shadow(0 26px 30px rgba(0,0,0,.35))}
+.top{position:absolute;width:15%;transform:translate(-50%,-50%)}
+.tp img{width:100%;display:block;filter:drop-shadow(0 3px 3px rgba(0,0,0,.25))}
+.labels{position:absolute;inset:-18%;pointer-events:none}
+.labels svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.labels path{fill:none;stroke:rgba(255,255,255,.75);stroke-width:1.2}
+.lab{position:absolute;transform:translate(-50%,-50%);background:rgba(255,255,255,.95);color:var(--ink);font-size:12px;font-weight:500;padding:6px 11px;border-radius:999px;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.15)}
+
+.badge{position:absolute;width:min(13vw,120px);aspect-ratio:1;z-index:5}
+.badge svg{width:100%;height:100%;animation:spin 14s linear infinite}
+.badge text{font:500 9.5px Inter,sans-serif;letter-spacing:.1em;fill:var(--ink)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.ovenBack,.ovenFront{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(118vw,calc(100vh * 1.55),1300px);aspect-ratio:1376/768;z-index:3}
+.ovenBack img,.ovenFront img{width:100%;height:100%;display:block}
+.ovenBack{-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 55%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 55%,#000 62%,transparent 100%)}
+.glow{position:absolute;left:34%;right:34%;top:36%;bottom:28%;border-radius:50% 50% 8% 8%;background:radial-gradient(60% 70% at 50% 80%,rgba(255,170,70,.95),rgba(255,110,30,.4) 50%,transparent 75%);mix-blend-mode:screen;opacity:0}
+.ovenFront{z-index:5;clip-path:inset(70.5% 0 0 0);-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 55%,#000 62%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 55%,#000 62%,transparent 100%)}
+
+.card{position:absolute;z-index:7;right:max(5vw,16px);bottom:6vh;width:min(360px,calc(100% - 32px));background:var(--card);border-radius:18px;padding:14px;display:flex;gap:14px;box-shadow:0 24px 60px rgba(0,0,0,.45)}
+.card .ph{width:110px;flex:none;border-radius:12px;overflow:hidden;background:#2a211d}
+.card .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.card h3{font-size:20px}
+.card p{margin:4px 0 8px;color:var(--muted);font-size:13px;line-height:1.4}
+.card .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card .price{font-weight:600;margin-right:auto;white-space:nowrap}
+.card button{min-height:40px;padding:0 16px;border-radius:999px;font:600 13px Inter,sans-serif;cursor:pointer;border:1.5px solid var(--ink);background:transparent;color:var(--ink)}
+.card button.go{background:var(--red);border-color:var(--red);color:#fff}
+
+.dots{position:absolute;left:50%;bottom:24px;transform:translateX(-50%);display:flex;gap:8px;z-index:8;mix-blend-mode:difference}
+.dots i{width:28px;height:2px;background:rgba(255,255,255,.3);border-radius:2px;overflow:hidden;position:relative}
+.dots i b{position:absolute;inset:0;background:#fff;transform:scaleX(0);transform-origin:left}
+
+/* after story */
+.band{padding:clamp(56px,8vw,112px) max(5vw,16px)}
+.wrap{max-width:1240px;margin:0 auto}
+.menuHead{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;flex-wrap:wrap;margin-bottom:32px}
+.menuHead h2{font-size:clamp(36px,4.6vw,60px)}
+.menuHead p{color:var(--muted);margin:10px 0 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:18px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:10px;transition:transform .3s,box-shadow .3s}
+.item:hover{transform:translateY(-4px);box-shadow:0 16px 34px rgba(60,30,10,.12)}
+.item img{width:150px;align-self:center;transition:transform .8s;filter:drop-shadow(0 10px 12px rgba(60,30,10,.25))}
+.item:hover img{transform:rotate(60deg)}
+.item h3{font-size:24px}
+.item p{margin:0;color:var(--muted);font-size:14px;flex:1}
+.item .row{display:flex;justify-content:space-between;align-items:center}
+.item .price{font-weight:600;white-space:nowrap}
+.item button{min-height:44px;padding:0 18px;border-radius:999px;border:0;background:var(--red);color:#fff;font:600 14px Inter,sans-serif;cursor:pointer}
+.note{font-size:13px;color:var(--muted);margin-top:16px}
+.visit{background:var(--dark);color:#efe7da}
+.visit .wrap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:40px}
+.visit h2{font-size:clamp(36px,4.6vw,60px)}
+.visit p{color:#bfb3a6}
+dl{margin:0;border-top:1px solid #3a302c}
+dl div{display:flex;justify-content:space-between;gap:16px;padding:16px 0;border-bottom:1px solid #3a302c}
+dt{color:#a99b8d}dd{margin:0;text-align:right}
+footer{background:#120f0e;color:#8f8277;font-size:13px;padding:24px max(5vw,16px)}
+footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,150%);background:var(--ink);color:#fff;padding:12px 20px;border-radius:999px;font-size:14px;z-index:60;transition:transform .35s}
+.toast:empty{visibility:hidden}
+.toast.show{transform:translate(-50%,0)}
+
+@media(max-width:760px){
+  .t1{top:calc(64px + 6vh);transform:none;right:20px}
+  .t3{right:20px}
+  .plate{width:min(78vw,380px)}
+  .badge{width:84px}
+  .card{bottom:12vh;right:16px}
+  .labels{inset:-3%}
+  .lab{font-size:11px;padding:5px 9px}
+}
+@media(prefers-reduced-motion:reduce){.dough .bob,.badge svg{animation:none}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="navin">
+    <a class="logo" href="#top">NAR</a>
+    <div class="links">
+      <a href="#story">Our craft</a>
+      <a href="#menu">The menu</a>
+      <a href="#visit">Visit</a>
+      <a class="order" href="#menu">Order now</a>
+    </div>
+  </div>
+</nav>
+
+<section class="story" id="story">
+  <div class="stage" id="top">
+
+    <div class="txt t1">
+      <div class="eyebrow">The dough</div>
+      <h2>Great pizza starts here.</h2>
+      <p>Slow-rested dough. Nothing rushed.</p>
+      <a class="pill dark" href="#menu">Discover the craft →</a>
+    </div>
+    <div class="txt t2">
+      <h2>Made of good things.</h2>
+      <p>Ripe tomatoes. Fresh mozzarella. Basil.</p>
+    </div>
+    <div class="txt t3">
+      <h2>Your next great pizza.</h2>
+      <p>Stone-baked. Ready when you are.</p>
+      <a class="pill light" href="#menu">Order your Margherita</a>
+    </div>
+
+    <div class="ovenBack" id="ovenBack"><img src="img/oven.webp" alt=""><div class="glow" id="glow"></div></div>
+
+    <div class="badge" id="badge" aria-hidden="true">
+      <svg viewBox="0 0 120 120"><defs><path id="circ" d="M60 60m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0"></path></defs><text><textPath href="#circ">SLOW DOUGH • STONE BAKED • MADE FRESH •</textPath></text></svg>
+    </div>
+
+    <div class="plate" id="plate" aria-hidden="true">
+      <div class="shadow" id="shadow"></div>
+
+      <!-- IMAGE 1: dough ball -->
+      <div class="dough" id="dough"><div class="bob"><img src="img/dough.webp" alt=""></div></div>
+
+      <div class="tilt" id="tilt">
+        <!-- IMAGE 2: raw base with sauce (top-down) + IMAGE 3: toppings -->
+        <div class="raw" id="raw"><img class="base" id="base" src="img/raw.webp" alt=""><div id="tops"></div></div>
+        <!-- IMAGE 4: baked pizza (top-down) -->
+        <div class="baked" id="baked">
+          <img src="img/baked.webp" alt="">
+        </div>
+      </div>
+
+      <div class="labels" id="labels"><svg viewBox="0 0 100 100" preserveAspectRatio="none" id="labLines"></svg></div>
+    </div>
+
+    <div class="ovenFront" id="ovenFront" aria-hidden="true"><img src="img/oven.webp" alt=""></div>
+
+    <div class="card" id="card">
+      <div class="ph"><img src="img/card.webp" alt="Margherita pizza on a wooden board"></div>
+      <div>
+        <h3>Margherita</h3>
+        <p>Tomato, fresh mozzarella, basil, olive oil.</p>
+        <div class="row"><span class="price">EGP 180</span><button type="button" class="go" data-add="Margherita">Order</button></div>
+      </div>
+    </div>
+
+    <div class="dots" aria-hidden="true"><i><b></b></i><i><b></b></i><i><b></b></i></div>
+  </div>
+</section>
+
+<section class="band" id="menu">
+  <div class="wrap">
+    <div class="menuHead">
+      <div><h2>The menu</h2><p>12-inch pizzas, baked to order in minutes.</p></div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <p class="note">Sample menu and prices — replace with your own.</p>
+  </div>
+</section>
+
+<section class="band visit" id="visit">
+  <div class="wrap">
+    <div>
+      <h2>Come hungry.</h2>
+      <p>Eat in, take away or delivery. Call ahead for big orders and we'll have it hot and ready.</p>
+    </div>
+    <dl>
+      <div><dt>Address</dt><dd>12 Example Street, Cairo</dd></div>
+      <div><dt>Phone</dt><dd>+20 100 000 0000</dd></div>
+      <div><dt>Open daily</dt><dd>1:00 pm – 1:00 am</dd></div>
+      <div><dt>Delivery</dt><dd>Within 5 km</dd></div>
+    </dl>
+  </div>
+  <p class="wrap note" style="color:#8f8277">Sample contact details — replace with your own.</p>
+</section>
+
+<footer><div class="wrap"><span>© Nar Pizza</span><span>Made of good things.</span></div></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+{
+  const $ = s => document.querySelector(s);
+
+  /* ---------- toppings (images in img/) ---------- */
+  // [image, x%, y%, rotation]
+  const topsData = [
+    ['mozz1',34,32,-10],['mozz2',63,29,20],['mozz3',29,59,35],['mozz4',53,51,-30],['mozz5',71,63,10],['mozz6',45,74,50],
+    ['basil1',48,37,-25],['basil2',31,45,60],['basil3',67,45,100],['basil4',39,63,-60],['basil5',61,77,15],['basil6',54,62,140]
+  ];
+  $('#tops').innerHTML = topsData.map(([n,x,y,r]) =>
+    `<div class="top" style="left:${x}%;top:${y}%"><div class="tp" data-r="${r}"><img src="img/${n}.webp" alt=""></div></div>`).join('');
+
+  // ingredient labels: [text, labelX, labelY, pointX, pointY] in % of the label box
+  const labs = [
+    ['Slow-rested crust',12,30,26,40],['Tomato sauce',14,72,34,58],['Fresh mozzarella',86,24,66,36],
+    ['Basil, added last',88,62,68,52],['Olive oil',84,88,62,70]
+  ];
+  $('#labLines').innerHTML = labs.map(([,lx,ly,px,py]) =>
+    `<path vector-effect="non-scaling-stroke" d="M${lx} ${ly} Q ${(lx+px)/2} ${Math.min(ly,py)-6} ${px} ${py}"></path>`).join('');
+  $('#labels').insertAdjacentHTML('beforeend', labs.map(([t,lx,ly]) => `<span class="lab" style="left:${lx}%;top:${ly}%">${t}</span>`).join(''));
+
+  /* ---------- menu ---------- */
+  const menu = [
+    ['Margherita','Tomato, fresh mozzarella, basil, olive oil.',180],
+    ['Pepperoni','Tomato, mozzarella, crisp beef pepperoni.',230],
+    ['Four Cheese','Mozzarella, cheddar, parmesan, blue cheese.',240],
+    ['Sucuk & Egg','Spiced sucuk, mozzarella, a soft egg.',250],
+    ['Spicy Diavola','Hot beef salami, chilli oil, mozzarella.',250],
+    ['Mushroom Truffle','White base, mushrooms, truffle oil.',270]
+  ];
+  $('#grid').innerHTML = menu.map(([n,desc,p],i) => `
+    <article class="item">
+      <img src="img/baked.webp" alt="" loading="lazy">
+      <h3>${n}</h3><p>${desc}</p>
+      <div class="row"><span class="price">EGP ${p}</span><button type="button" data-add="${n}">Add</button></div>
+    </article>`).join('');
+
+  const toast = $('#toast'); let tt;
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-add]'); if (!b) return;
+    toast.textContent = `${b.dataset.add} added — call us to confirm your order`;
+    toast.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => toast.classList.remove('show'), 2600);
+  });
+
+  /* ---------- scroll story ---------- */
+  if (window.gsap && window.ScrollTrigger) {
+    gsap.registerPlugin(ScrollTrigger);
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (window.Lenis && !reduce) {
+      try {
+        const lenis = new Lenis({ lerp: 0.09 });
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add(t => lenis.raf(t * 1000));
+        gsap.ticker.lagSmoothing(0);
+        document.querySelectorAll('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
+          const el = document.querySelector(a.getAttribute('href')); if (!el) return;
+          e.preventDefault(); lenis.scrollTo(el, { offset: -60 });
+        }));
+      } catch (err) {}
+    }
+
+    const mobile = () => innerWidth <= 760;
+    // where the oven floor sits on screen, relative to the plate's resting centre
+    const oven = () => {
+      const w = $('#ovenBack').offsetWidth, hh = w * 768 / 1376, top = innerHeight - hh;
+      const s = (w * .25) / W();                       // pizza ~25% of oven width: fits inside the opening
+      const floor = top + hh * .70;                     // oven floor line in the photo
+      const half = W() * s * Math.cos(72 * Math.PI / 180) / 2; // half the height of the tilted pizza
+      return { y: floor - half + hh * .008 - innerHeight * .52, s };
+    };
+    const W = () => $('#plate').offsetWidth;
+    gsap.set('#plate', { xPercent: -50, yPercent: -50 });
+    gsap.set('#tilt', { transformPerspective: 1100, rotationX: 55, opacity: 0, scale: .6 });
+    gsap.set(['.t2', '.t3', '#card', '#labels'], { autoAlpha: 0 });
+    gsap.set('.lab', { autoAlpha: 0, scale: .8 });
+    gsap.set('#labLines path', { strokeDasharray: 200, strokeDashoffset: 200 });
+    gsap.set(['#ovenBack', '#ovenFront'], { yPercent: 110 });
+    gsap.set('#card', { y: 60 });
+    document.querySelectorAll('.tp').forEach((el, i) => {
+      const ang = (i / 12) * Math.PI * 2;
+      gsap.set(el, { x: Math.cos(ang) * 420, y: Math.sin(ang) * 420 - 200, rotation: +el.dataset.r + 180, scale: 1.8, opacity: 0 });
+    });
+
+    const placeBadge = () => {
+      const r = $('#plate').getBoundingClientRect();
+      gsap.set('#badge', { left: r.right - W() * .2, top: r.top - W() * .02 });
+    };
+
+    const tl = gsap.timeline({
+      defaults: { ease: 'power2.inOut' },
+      scrollTrigger: { trigger: '.stage', start: 'top top', end: () => '+=' + innerHeight * 5, pin: true, scrub: 1, invalidateOnRefresh: true,
+        onUpdate: self => {
+          const p = self.progress * 3;
+          document.querySelectorAll('.dots b').forEach((b, i) => gsap.set(b, { scaleX: Math.max(0, Math.min(1, p - i)) }));
+        },
+        onRefresh: placeBadge }
+    });
+
+    // scene 1 position
+    tl.set('#plate', { x: () => mobile() ? 0 : innerWidth * .2, y: () => mobile() ? innerHeight * .14 : 0 }, 0)
+      .to({}, { duration: .6 })
+    // -> scene 2: red, dough flattens into base
+      .to('.t1', { autoAlpha: 0, y: -40, duration: .5 }, 'a')
+      .to('#badge', { autoAlpha: 0, duration: .3 }, 'a')
+      .to('.stage', { backgroundColor: '#a8231c', duration: 1 }, 'a')
+      .to('#plate', { x: 0, y: () => mobile() ? innerHeight * .08 : innerHeight * .06, duration: 1 }, 'a')
+      .to('#dough', { scaleY: .35, scaleX: 1.35, y: '22%', duration: .7, ease: 'power3.in' }, 'a+=.15')
+      .to('#dough', { autoAlpha: 0, duration: .25 }, 'a+=.7')
+      .to('#tilt', { opacity: 1, scale: 1, duration: .6, ease: 'back.out(1.4)' }, 'a+=.65')
+      .to('#shadow', { scaleX: 1.4, opacity: .7, duration: .6 }, 'a+=.65')
+      .fromTo('.t2', { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: .5 }, 'a+=.5')
+      .fromTo('#base', { rotation: -200 }, { rotation: 0, duration: 1.2, ease: 'power2.out' }, 'a+=.65')
+      .to('.tp', { x: 0, y: 0, rotation: (i, el) => +el.dataset.r, scale: 1, opacity: 1, duration: .9, stagger: .07, ease: 'power3.out' }, 'b+=.6')
+      .to('#tilt', { rotationX: 28, duration: 1 }, 'b+=1.2')
+      .to('#labels', { autoAlpha: 1, duration: .1 }, 'c')
+      .to('#labLines path', { strokeDashoffset: 0, duration: .6, stagger: .08 }, 'c')
+      .to('.lab', { autoAlpha: 1, scale: 1, duration: .4, stagger: .08, ease: 'back.out(2)' }, 'c+=.2')
+      .to({}, { duration: .7 })
+    // -> scene 3: dark, into the oven, out baked
+      .to(['#labels', '.t2'], { autoAlpha: 0, duration: .4 }, 'd')
+      .to('.stage', { backgroundColor: '#1b1716', duration: .8 }, 'd')
+      .to(['#ovenBack', '#ovenFront'], { yPercent: 0, duration: .8, ease: 'power3.out' }, 'd+=.1')
+      .to('#plate', { x: 0, y: () => oven().y, scale: () => oven().s, duration: .8 }, 'd+=.4')
+      .to('#tilt', { rotationX: 72, duration: .8 }, 'd+=.4')
+      .to('#shadow', { opacity: 0, duration: .3 }, 'd+=.4')
+      .to('#glow', { opacity: 1, duration: .45, yoyo: true, repeat: 1 }, 'd+=1.1')
+      .to('#raw', { opacity: 0, duration: .3 }, 'd+=1.4')
+      .to('#baked', { opacity: 1, duration: .3 }, 'd+=1.4')
+      .to('#plate', { y: () => mobile() ? innerHeight * .06 : -innerHeight * .04, x: () => mobile() ? 0 : innerWidth * .1, scale: () => mobile() ? .9 : .86, duration: 1, ease: 'power3.out' }, 'e')
+      .to('#tilt', { rotationX: 22, duration: 1 }, 'e')
+      .to(['#ovenBack', '#ovenFront'], { yPercent: 110, duration: .7, ease: 'power2.in' }, 'e+=.1')
+      .fromTo('.t3', { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: .5 }, 'e+=.3')
+      .to('#card', { autoAlpha: 1, y: 0, duration: .5, ease: 'power3.out' }, 'e+=.7')
+      .to({}, { duration: .8 });
+
+    addEventListener('load', () => { ScrollTrigger.refresh(); placeBadge(); });
+    placeBadge();
+  } else {
+    // no animation library: show final state statically
+    document.querySelector('.t1').style.position = 'relative';
+  }
+}
+</script>
+</body>
+</html>
